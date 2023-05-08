@@ -53,8 +53,7 @@ public class Health extends BaseEntity{
     private User user;
 
 
-    public Health(Long id, String treat, String check_part, String poop_color, String color_info, String poop_firmness, String firmness_info, String poop_num, String num_info, int score, Pet pet, User user) {
-        this.id = id;
+    public Health(String treat, String check_part, String poop_color, String color_info, String poop_firmness, String firmness_info, String poop_num, String num_info, int score, Pet pet, User user) {
         this.treat = treat;
         this.check_part = check_part;
         this.poop_color = poop_color;
