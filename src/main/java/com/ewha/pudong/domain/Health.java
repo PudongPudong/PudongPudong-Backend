@@ -23,23 +23,17 @@ public class Health extends BaseEntity{
     @Column
     private String check_part;
 
+    @OneToOne
     @Column
-    private String poop_color;
+    private PoopColor poop_color;
 
+    @OneToOne
     @Column
-    private String color_info;
+    private PoopFirmness poop_firmness;
 
+    @OneToOne
     @Column
-    private String poop_firmness;
-
-    @Column
-    private String firmness_info;
-
-    @Column
-    private String poop_num;
-
-    @Column
-    private String num_info;
+    private PoopNum poop_num;
 
     @Column
     private int score;
@@ -54,18 +48,14 @@ public class Health extends BaseEntity{
 
 
     @Builder
-    public Health(String treat, String check_part, String poop_color, String color_info, String poop_firmness, String firmness_info, String poop_num, String num_info, int score, Pet pet, User user) {
+    public Health(String treat, String check_part, PoopColor poop_color, PoopFirmness poop_firmness, PoopNum poop_num, int score, Pet pet, User user) {
         this.treat = treat;
         this.check_part = check_part;
         this.poop_color = poop_color;
-        this.color_info = color_info;
         this.poop_firmness = poop_firmness;
-        this.firmness_info = firmness_info;
         this.poop_num = poop_num;
-        this.num_info = num_info;
         this.score = score;
         this.pet = pet;
         this.user = user;
     }
-
 }
