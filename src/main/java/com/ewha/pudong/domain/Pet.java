@@ -2,6 +2,7 @@ package com.ewha.pudong.domain;
 
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,6 +39,7 @@ public class Pet extends BaseEntity{
     @Column
     private String allergy;
 
+    @Builder
     public Pet(User user, String petname, String image, String birth, String sex, String allergy) {
         this.user = user;
         this.petname = petname;
