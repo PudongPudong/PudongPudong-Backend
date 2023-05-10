@@ -53,4 +53,11 @@ public class User extends BaseEntity{
         this.provider = provider;
         this.providerId = providerId;
     }
+
+    public User update(String username, String image){
+        this.username = username;
+        this.image = image;
+
+        return this;
+    }
 }
