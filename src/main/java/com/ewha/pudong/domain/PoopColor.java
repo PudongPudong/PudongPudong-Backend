@@ -17,6 +17,9 @@ public class PoopColor {
     private Long id;
 
     @Column
+    private String name;
+
+    @Column
     private String info;
 
     @Column

@@ -17,6 +17,9 @@ public class PoopNum {
     private Long id;
 
     @Column
+    private String name;
+
+    @Column
     private String info;
 
     @Column

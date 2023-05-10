@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HealthDto {
+public class HealthRequestDto {
     private String treat;
     private String check_part;
-
     private int score;
 
 
