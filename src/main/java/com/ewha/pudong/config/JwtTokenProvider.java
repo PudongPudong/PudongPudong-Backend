@@ -2,6 +2,8 @@ package com.ewha.pudong.config;
 
 import com.ewha.pudong.dto.UserResponseDto;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.security.Key;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
@@ -28,7 +31,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtTokenProvider {
     @Value("${jwt.secret}")
-    private String secretKey;
+    private Key key;
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORITIES_KEY = "auth";
@@ -40,10 +43,9 @@ public class JwtTokenProvider {
     // 14일
     private final long REFRESH_TOKEN_VALID_TIME = 60 * 60 * 24 * 14 * 1000L;
 
-    // 객체 초기화, secretKey를 Base64로 인코딩한다.
-    @PostConstruct
-    protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    public JwtTokenProvider(@Value("${oauth.jwt.secret}") String secretKey) {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
     //Authentication 을 가지고 AccessToken, RefreshToken 을 생성하는 메서드
@@ -67,7 +69,7 @@ public class JwtTokenProvider {
                 .claim("type", TYPE_ACCESS)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME))  //토큰 만료 시간 설정
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
 
         //Generate RefreshToken
@@ -75,7 +77,7 @@ public class JwtTokenProvider {
                 .claim("type", TYPE_REFRESH)
                 .setIssuedAt(now)   //토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME)) //토큰 만료 시간 설정
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
 
         return UserResponseDto.TokenInfo.builder()
@@ -108,7 +110,7 @@ public class JwtTokenProvider {
     //토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
@@ -124,7 +126,7 @@ public class JwtTokenProvider {
 
     private Claims parseClaims(String accessToken) {
         try {
-            return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(accessToken).getBody();
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e) {
             // ???
             return e.getClaims();
