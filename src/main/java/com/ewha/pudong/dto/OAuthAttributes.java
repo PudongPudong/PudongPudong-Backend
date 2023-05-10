@@ -69,7 +69,7 @@ public class OAuthAttributes {
                 .email(email)
                 .role(Role.USER)
                 .provider(provider)
-                .providerId(nameAttributeKey)
+                .providerId(String.valueOf(attributes.get(nameAttributeKey)))
                 .build();
 
         return user;
