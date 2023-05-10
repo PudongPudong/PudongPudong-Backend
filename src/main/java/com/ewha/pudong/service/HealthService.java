@@ -2,6 +2,7 @@ package com.ewha.pudong.service;
 
 import com.ewha.pudong.domain.*;
 import com.ewha.pudong.dto.HealthRequestDto;
+import com.ewha.pudong.dto.HealthResponseDto;
 import com.ewha.pudong.repository.HealthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,20 +23,19 @@ public class HealthService {
 
     // 건강 전체 조회
     @Transactional(readOnly = true)
-    public List<HealthRequestDto> getHealth(){
-        List<Health> healths = healthRepository.findAll();
-        List<HealthRequestDto> healthRequestDtos = new ArrayList<>();
-        healths.forEach(s -> healthRequestDtos.add(HealthRequestDto.toEntity(s.getUser(),s.getPet(),s.getPoop_color(),s.getPoop_firmness(), s.getPoop_num())));
-        return healthRequestDtos;
+    public List<HealthResponseDto> getHealth(){
+        return healthRepository.findAll().stream()
+                .map(HealthResponseDto::new)
+                .collect(Collectors.toList());
     }
 
+    //건강 개별 조회
     @Transactional(readOnly = true)
-    public HealthRequestDto getBoard(Long id) {
+    public HealthResponseDto getHealth(Long id) {
         Health health = healthRepository.findById(id).orElseThrow(() -> {
-            return new IllegalArgumentException("Board Id를 찾을 수 없습니다.");
+            return new IllegalArgumentException("Health Id를 찾을 수 없습니다.");
         });
-        HealthRequestDto healthRequestDto = healthRequestDto.toEntity(health.getUser(), health.getPet(), health.getPoop_color(), health.getPoop_firmness(), health.getPoop_num());
-        return new HealthRequestDto(health);
+        return new HealthResponseDto(health);
     }
 
 
