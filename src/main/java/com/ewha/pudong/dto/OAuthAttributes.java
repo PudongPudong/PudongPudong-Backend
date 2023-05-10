@@ -13,14 +13,16 @@ import java.util.Map;
 public class OAuthAttributes {
     private Map<String, Object> attributes;
     private String nameAttributeKey;
+    private String provider;
     private String name;
     private String email;
     private String image;
 
     @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String image) {
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String provider, String name, String email, String image) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
+        this.provider = provider;
         this.name = name;
         this.email = email;
         this.image = image;
@@ -28,22 +30,23 @@ public class OAuthAttributes {
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
         if("naver".equals(registrationId)){
-            return ofNaver(userNameAttributeName, attributes);
+            return ofNaver(registrationId, userNameAttributeName, attributes);
         }
-        return ofKakao(userNameAttributeName, attributes);
+        return ofKakao(registrationId, userNameAttributeName, attributes);
     }
 
-    public static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes){
+    public static OAuthAttributes ofNaver(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
         Map<String, Object> response = (Map<String, Object>)attributes.get("response");
         return OAuthAttributes.builder()
                 .nameAttributeKey(userNameAttributeName)
+                .provider(registrationId)
                 .name((String)response.get("name"))
                 .email((String)response.get("email"))
                 .image((String)response.get("profile_image"))
                 .attributes(attributes)
                 .build();
     }
-    public static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+    public static OAuthAttributes ofKakao(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         // email
         Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
         // nickname, profile_image
@@ -51,6 +54,7 @@ public class OAuthAttributes {
 
         return OAuthAttributes.builder()
                 .nameAttributeKey(userNameAttributeName)
+                .provider(registrationId)
                 .name((String) kakaoProfile.get("nickname"))
                 .email((String) kakaoAccount.get("email"))
                 .image((String) kakaoProfile.get("profile_image_url"))
@@ -64,6 +68,8 @@ public class OAuthAttributes {
                 .image(image)
                 .email(email)
                 .role(Role.USER)
+                .provider(provider)
+                .providerId(nameAttributeKey)
                 .build();
 
         return user;

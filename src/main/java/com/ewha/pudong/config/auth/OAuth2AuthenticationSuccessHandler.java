@@ -1,6 +1,7 @@
 package com.ewha.pudong.config.auth;
 
 import com.ewha.pudong.config.JwtTokenProvider;
+import com.ewha.pudong.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -32,10 +33,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         OAuth2User principal = (OAuth2User)authentication.getPrincipal();
 
         //로그인 성공 시 jwt 토큰 발행
-        String accessToken = jwtTokenProvider.createAccessToken(principal.getName(), principal.getAuthorities().stream().findFirst().get().getAuthority());
+        UserResponseDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+
 
         String redirectUrl = UriComponentsBuilder.fromUriString("https://localhost:3000/login") //frontend page로 redirect
-                .queryParam("token", accessToken)
+                .queryParam("token", tokenInfo.getAccessToken())
                 .build().toUriString();
 
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
