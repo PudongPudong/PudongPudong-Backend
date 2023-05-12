@@ -1,6 +1,7 @@
 package com.ewha.pudong.service;
 
 import com.ewha.pudong.domain.User;
+import com.ewha.pudong.domain.UserPrincipal;
 import com.ewha.pudong.dto.OAuthAttributes;
 import com.ewha.pudong.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,10 +44,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         User user = saveOrUpdate(attributes);
 
-        return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue())),
-                attributes.getAttributes(),
-                attributes.getNameAttributeKey());
+        return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
     private User saveOrUpdate(OAuthAttributes attributes) {

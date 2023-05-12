@@ -1,5 +1,6 @@
 package com.ewha.pudong.config;
 
+import com.ewha.pudong.domain.UserPrincipal;
 import com.ewha.pudong.dto.UserResponseDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -22,6 +23,7 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 @Component
 @Slf4j
@@ -93,13 +95,14 @@ public class JwtTokenProvider {
         }
 
         //클레임에서 권한 정보 가져오기
-        Collection<? extends GrantedAuthority> authorities =
+        List<GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        //UserDetails 객체를 만들어서 Authentication 리턴
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
+        //UserPrincipal 객체를 만들어서 Authentication 리턴
+        UserPrincipal principal = new UserPrincipal(Long.valueOf(claims.getSubject()), "", authorities);
+
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
