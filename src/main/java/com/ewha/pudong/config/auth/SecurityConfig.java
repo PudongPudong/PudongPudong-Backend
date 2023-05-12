@@ -35,8 +35,9 @@ public class SecurityConfig {
 
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                        .mvcMatchers("**/oauth2/**", "/main", "/","/css/**","/images/**","/js/**").permitAll()
-                        .anyRequest().authenticated()
+                                .antMatchers("/").permitAll() //일단 다 허용
+//                        .mvcMatchers("**/oauth2/**", "/main", "/","/css/**","/images/**","/js/**").permitAll()
+//                        .anyRequest().authenticated()
                 )
                 .logout()
 

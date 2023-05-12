@@ -33,6 +33,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         OAuth2User principal = (OAuth2User)authentication.getPrincipal();
 
         //로그인 성공 시 jwt 토큰 발행
+        log.info("userPrincipal attributes = {}", principal.getAttributes());
+        logger.info("authentication.getName() = " + authentication.getName());
         UserResponseDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
 
 
