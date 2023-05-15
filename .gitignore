@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+=======
+.vscode/
+
+application-oauth.properties
+application-db.properties

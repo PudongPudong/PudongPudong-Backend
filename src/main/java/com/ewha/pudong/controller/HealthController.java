@@ -4,6 +4,7 @@ import com.ewha.pudong.domain.*;
 import com.ewha.pudong.dto.HealthRequestDto;
 import com.ewha.pudong.dto.HealthResponseDto;
 import com.ewha.pudong.repository.HealthRepository;
+import com.ewha.pudong.repository.UserRepository;
 import com.ewha.pudong.service.HealthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,11 +17,13 @@ import java.util.List;
 @RequestMapping("/health")
 public class HealthController {
     private final HealthService healthService;
+
+    private final UserRepository userRepository;
     private final HealthRepository healthRepository;
 
     // 건강 전체 조회
     @GetMapping()
-    public List<HealthResponseDto> getHealthList() {
+    public List<HealthResponseDto> getHealthList(@AuthenticationPrincipal User user) {
         return healthService.findHealthList();
     }
 
