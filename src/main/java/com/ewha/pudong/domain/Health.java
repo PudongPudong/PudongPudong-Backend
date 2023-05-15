@@ -24,15 +24,15 @@ public class Health extends BaseEntity{
     private String check_part;
 
     @OneToOne
-    @Column
+    @JoinColumn(name = "poopcolor_id")
     private PoopColor poop_color;
 
     @OneToOne
-    @Column
+    @JoinColumn(name = "poopfimness_id")
     private PoopFirmness poop_firmness;
 
     @OneToOne
-    @Column
+    @JoinColumn(name = "poopnum_id")
     private PoopNum poop_num;
 
     @Column
