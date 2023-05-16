@@ -23,8 +23,8 @@ public class HealthService {
 
     // 건강 전체 조회
     @Transactional(readOnly = true)
-    public List<HealthResponseDto> findHealthList(){
-        return healthRepository.findAll().stream()
+    public List<HealthResponseDto> findHealthList(Long user_id){
+        return healthRepository.findAllByUserId(user_id).stream()
                 .map(HealthResponseDto::new)
                 .collect(Collectors.toList());
     }

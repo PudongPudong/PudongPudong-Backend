@@ -21,10 +21,10 @@ public class HealthController {
     private final UserRepository userRepository;
     private final HealthRepository healthRepository;
 
-    // 건강 전체 조회
+    // 유저별 건강 전체 조회
     @GetMapping()
     public List<HealthResponseDto> getHealthList(@AuthenticationPrincipal User user) {
-        return healthService.findHealthList();
+        return healthService.findHealthList(user.getId());
     }
 
     // 건강 개별 조회

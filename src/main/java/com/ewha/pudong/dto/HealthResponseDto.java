@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +20,8 @@ public class HealthResponseDto {
     private String poop_num;
     private String num_info;
 
+    private LocalDateTime createdAt;
+
     public HealthResponseDto(Health health){
         this.result = health.getResult();
         this.score = health.getScore();
@@ -27,6 +31,6 @@ public class HealthResponseDto {
         this.firmness_info = health.getPoop_firmness().getInfo();
         this.poop_num = health.getPoop_num().getName();
         this.num_info = health.getPoop_num().getInfo();
-
+        this.createdAt = health.getCreatedAt();
     }
 }
