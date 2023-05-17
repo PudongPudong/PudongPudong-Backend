@@ -41,15 +41,26 @@ public class RecipeService {
 
         if(efficacy != null)
             spec = spec.and(RecipeSpecification.efficacyLike(efficacy));
-        else if(type != null)
-            spec = spec.and(RecipeSpecification.typeEquals(type));
-        else if(tool != null)
+        if(type != null)
+            spec = spec.and(RecipeSpecification.typeLike(type));
+        if(tool != null)
             spec = spec.and(RecipeSpecification.toolLike(tool));
-        else if(cookingTime != null)
-            spec = spec.and(RecipeSpecification.cookingTimeEquals(cookingTime));
+        if(cookingTime != null) {
+            Integer min = convertToMin(cookingTime);
+            //spec = spec.and(RecipeSpecification.cookingTimeLess(min));
+        }
 
         return recipeRepository.findAll(spec).stream().map(RecipeResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    private Integer convertToMin(String cookingTime){
+        String time = cookingTime.replaceAll("[^0-9]", "");
+        Integer min = Integer.parseInt(time);
+        if(time.length()==1){
+            return min*60; //hour to min
+        }
+        else return min;
     }
 
     private Recipe findRecipeEntity(Long recipeId) {

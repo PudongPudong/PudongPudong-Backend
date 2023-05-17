@@ -34,7 +34,7 @@ public class RecipeDetailResponseDto {
     }
 
     private List<String> stringToList(String str){
-        String[] arr = str.split(" ");
+        String[] arr = str.split("\n");
         return new ArrayList<>(Arrays.asList(arr));
     }
 
