@@ -54,11 +54,12 @@ public class Recipe {
     private String image;
 
     @Builder
-    public Recipe(String name, String ingredient, String efficacy, Integer cookingTime, String tool, String cookingOrder,
+    public Recipe(String name, String ingredient, String efficacy, String type, Integer cookingTime, String tool, String cookingOrder,
                   String tip, String plusPoint, String youtubeLink, String image){
         this.name = name;
         this.ingredient = ingredient;
         this.efficacy = efficacy;
+        this.type = type;
         this.cookingTime = cookingTime;
         this.tool = tool;
         this.cookingOrder = cookingOrder;
