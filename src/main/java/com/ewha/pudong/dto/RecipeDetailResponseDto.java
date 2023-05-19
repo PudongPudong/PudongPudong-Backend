@@ -14,7 +14,7 @@ public class RecipeDetailResponseDto {
     private String name;
     private String efficacy;
     private String type;
-    private String cookingTime;
+    private Integer cookingTime;
     private String tool;
     private List<String> ingredient;
     private String cookingOrder;

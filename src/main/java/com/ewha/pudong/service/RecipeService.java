@@ -47,7 +47,7 @@ public class RecipeService {
             spec = spec.and(RecipeSpecification.toolLike(tool));
         if(cookingTime != null) {
             Integer min = convertToMin(cookingTime);
-            //spec = spec.and(RecipeSpecification.cookingTimeLess(min));
+            spec = spec.and(RecipeSpecification.cookingTimeLess(min));
         }
 
         return recipeRepository.findAll(spec).stream().map(RecipeResponseDto::new)
@@ -57,10 +57,8 @@ public class RecipeService {
     private Integer convertToMin(String cookingTime){
         String time = cookingTime.replaceAll("[^0-9]", "");
         Integer min = Integer.parseInt(time);
-        if(time.length()==1){
-            return min*60; //hour to min
-        }
-        else return min;
+
+        return min;
     }
 
     private Recipe findRecipeEntity(Long recipeId) {

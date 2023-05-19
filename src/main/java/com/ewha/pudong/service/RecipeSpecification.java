@@ -16,8 +16,8 @@ public class RecipeSpecification {
         return (root, query, CriteriaBuilder) -> CriteriaBuilder.like(root.get("tool"),"%" + tool + "%");
     }
 
-//    public static Specification<Recipe> cookingTimeLess(Integer cookingTime) {
-//        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("cookingTime"), cookingTime);
-//    }
+    public static Specification<Recipe> cookingTimeLess(Integer cookingTime) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("cookingTime"), cookingTime);
+    }
 
 }
