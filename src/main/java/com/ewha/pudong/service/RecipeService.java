@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,5 +66,22 @@ public class RecipeService {
     private Recipe findRecipeEntity(Long recipeId) {
         return recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new CustomException(ErrorCode.RECIPE_NOT_FOUND));
+    }
+
+    public List<RecipeResponseDto> findRandomRecipe(){
+        List<Recipe> recipes = recipeRepository.findAll();
+        Random random = new Random();
+
+        Long first = Long.valueOf(random.nextInt(recipes.size()));
+        Long second = Long.valueOf(random.nextInt(recipes.size()));
+        Long third = Long.valueOf(random.nextInt(recipes.size()));
+        List<Recipe> randomRecipes = new ArrayList<Recipe>();
+        randomRecipes.add(recipeRepository.getById(first));
+        randomRecipes.add(recipeRepository.getById(second));
+        randomRecipes.add(recipeRepository.getById(third));
+
+        return randomRecipes.stream().map(RecipeResponseDto::new)
+                .collect(Collectors.toList());
+
     }
 }
