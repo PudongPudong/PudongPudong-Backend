@@ -56,11 +56,11 @@ public class Health extends BaseEntity{
 
     public void setResult(){
         if (score>=0 && score<=50){
-            this.result = treat+"은 "+pet.getName()+"이에게 잘 맞지 않아요.";
+            this.result = treat+"은(는) "+pet.getName()+"(이)에게 잘 맞지 않아요.";
         } else if (score>50 && score<=80) {
-            this.result = treat+"은 "+pet.getName()+"이에게 맞아요.";
+            this.result = treat+"은(는) "+pet.getName()+"(이)에게 맞아요.";
         } else if (score>80 && score<=100) {
-            this.result = treat+"은 "+pet.getName()+"이에게 잘 맞아요!";
+            this.result = treat+"은(는) "+pet.getName()+"(이)에게 잘 맞아요!";
         }
     }
 
