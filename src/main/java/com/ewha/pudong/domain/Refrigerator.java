@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="refrigerator")
-public class Refrigerator {
+public class Refrigerator extends BaseEntity{
     @Id
     @Column(name = "refrigerator_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +20,12 @@ public class Refrigerator {
     @Column
     private String ingredient;
 
+    @OneToOne
+    private User user;
+
     @Builder
-    public Refrigerator(String ingredient) {
+    public Refrigerator(String ingredient, User user) {
         this.ingredient = ingredient;
+        this.user = user;
     }
 }

@@ -32,7 +32,6 @@ public class HealthController {
     // @AuthenticationPrincipal User user
     public List<HealthResponseDto> getHealthList() {
         User user = userRepository.getById(1L);
-        System.out.println("user = " + user);
         return healthService.findHealthList(user);
     }
 

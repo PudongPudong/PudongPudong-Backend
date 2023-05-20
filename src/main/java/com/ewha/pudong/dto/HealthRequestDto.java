@@ -6,18 +6,16 @@ import com.ewha.pudong.repository.PoopFirmnessRepository;
 import com.ewha.pudong.repository.PoopNumRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Optional;
 
-
+@Getter
 @Data
 @AllArgsConstructor
 public class HealthRequestDto {
 
-    private final PoopColorRepository poopColorRepository;
-    private final PoopFirmnessRepository poopFirmnessRepository;
-    private final PoopNumRepository poopNumRepository;
     private String treat;
     private String check_part;
 

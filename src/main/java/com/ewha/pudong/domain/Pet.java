@@ -19,7 +19,7 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @NotNull
     @JoinColumn(name = "user_id")
     private User owner;
