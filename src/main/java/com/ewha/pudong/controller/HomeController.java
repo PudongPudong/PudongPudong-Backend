@@ -31,13 +31,13 @@ public class HomeController {
     @GetMapping("/refrigerator")
     // @AuthenticationPrincipal User user
     public RefrigeratorResponseDto getMyRefirgerator(){
-        User user = userRepository.getById(1L);
+        User user = userRepository.getReferenceById(1L);
         return refrigeratorService.findMyRefrigerator(user);
     }
 
     @PostMapping("/refrigerator")
     public RefrigeratorResponseDto saveMyRefrigerator(@RequestBody RefrigeratorRequestDto refrigeratorRequestDto){
-        User user = userRepository.getById(1L);
+        User user = userRepository.getReferenceById(1L);
         return refrigeratorService.saveMyRefrigerator(refrigeratorRequestDto, user);
     }
 }

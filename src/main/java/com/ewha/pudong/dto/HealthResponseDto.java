@@ -13,7 +13,7 @@ public class HealthResponseDto {
     private int score;
 
     public HealthResponseDto(Health health) {
-        this.treat = treat;
-        this.score = score;
+        this.treat = health.getTreat();
+        this.score = health.getScore();
     }
 }

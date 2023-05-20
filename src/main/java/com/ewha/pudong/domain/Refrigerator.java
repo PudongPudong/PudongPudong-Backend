@@ -21,11 +21,17 @@ public class Refrigerator extends BaseEntity{
     private String ingredient;
 
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
     public Refrigerator(String ingredient, User user) {
         this.ingredient = ingredient;
         this.user = user;
+    }
+
+    public Refrigerator update(String ingredient){
+        this.ingredient = ingredient;
+        return this;
     }
 }

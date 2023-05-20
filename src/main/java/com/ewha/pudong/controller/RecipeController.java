@@ -15,6 +15,7 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     @GetMapping("refrigerator")
+    // @AuthenticationPrincipal User user
     public List<RecipeResponseDto> makeRecipeByIngredient(@RequestParam List<String> ingredients){
         return recipeService.findRecipeByIngredient(ingredients);
     }

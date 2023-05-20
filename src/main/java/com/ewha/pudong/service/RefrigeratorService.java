@@ -18,13 +18,22 @@ public class RefrigeratorService {
     private final RefrigeratorRepository refrigeratorRepository;
 
     public RefrigeratorResponseDto findMyRefrigerator(User user){
+        System.out.println("user = " + user.getId());
         Refrigerator refrigerator = refrigeratorRepository.findByUser(user);
         return new RefrigeratorResponseDto(refrigerator);
     }
 
     public RefrigeratorResponseDto saveMyRefrigerator(RefrigeratorRequestDto refrigeratorRequestDto, User user){
-        Refrigerator refrigerator = refrigeratorRequestDto.toEntity(user);
-        refrigeratorRepository.save(refrigerator);
-        return new RefrigeratorResponseDto(refrigerator);
+        Refrigerator myRefrigerator = refrigeratorRepository.findByUser(user);
+        if (myRefrigerator==null){
+            Refrigerator refrigerator = refrigeratorRequestDto.toEntity(user);
+            refrigeratorRepository.save(refrigerator);
+            return new RefrigeratorResponseDto(refrigerator);
+        }
+        else {
+            myRefrigerator.update(refrigeratorRequestDto.getIngredient());
+            refrigeratorRepository.save(myRefrigerator);
+            return new RefrigeratorResponseDto(myRefrigerator);
+        }
     }
 }
