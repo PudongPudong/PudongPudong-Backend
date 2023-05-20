@@ -38,9 +38,10 @@ public class User extends BaseEntity{
     @JsonIgnore
     private String password;
 
-    @NotNull
+    @Column
     private String provider; //어떤 OAuth인지
 
+    @Column
     private String providerId;
 
     @Builder
