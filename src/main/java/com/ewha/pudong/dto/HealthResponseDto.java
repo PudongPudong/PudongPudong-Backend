@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HealthResponseDto {
+
+    private String treat;
+    private String check_part;
     private String result;
     private int score;
     private String poop_color;
@@ -32,5 +35,7 @@ public class HealthResponseDto {
         this.poop_num = health.getPoop_num().getName();
         this.num_info = health.getPoop_num().getInfo();
         this.createdAt = health.getCreatedAt();
+        this.treat = health.getTreat();
+        this.check_part = health.getCheck_part();
     }
 }

@@ -4,14 +4,19 @@ import com.ewha.pudong.domain.*;
 import com.ewha.pudong.dto.HealthRequestDto;
 import com.ewha.pudong.dto.HealthResponseDto;
 import com.ewha.pudong.repository.HealthRepository;
+import com.ewha.pudong.repository.PoopColorRepository;
+import com.ewha.pudong.repository.PoopFirmnessRepository;
+import com.ewha.pudong.repository.PoopNumRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,11 +25,23 @@ import java.util.stream.Collectors;
 @Slf4j
 public class HealthService {
     private final HealthRepository healthRepository;
+    private final PoopColorRepository poopColorRepository;
+    private final PoopFirmnessRepository poopFirmnessRepository;
+    private final PoopNumRepository poopNumRepository;
 
     // 건강 전체 조회
     @Transactional(readOnly = true)
-    public List<HealthResponseDto> findHealthList(Long user_id){
-        return healthRepository.findAllByUserId(user_id).stream()
+    public List<HealthResponseDto> findHealthList(User user){
+        return healthRepository.findAllByUserId(user.getId(), Sort.by(Sort.Direction.ASC, "score")).stream()
+                .map(HealthResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    // 흡수 점수가 가장 높은 건강 3개 조회
+
+    @Transactional(readOnly = true)
+    public  List<HealthResponseDto> findHealth3(User user){
+        return healthRepository.findAllByUserId(user.getId(), Sort.by(Sort.Direction.ASC,"score")).stream()
                 .map(HealthResponseDto::new)
                 .collect(Collectors.toList());
     }
@@ -41,9 +58,12 @@ public class HealthService {
 
     // 건강 작성
     @Transactional
-    public Long createHealth(HealthRequestDto healthRequestDto, User user, Pet pet, PoopColor poop_color, PoopFirmness poop_firmness, PoopNum poop_num) {
-        Health health = healthRequestDto.toEntity(user, pet, poop_color, poop_firmness, poop_num);
-        health.setScore(poop_color,poop_firmness,poop_num);
+    public Long createHealth(HealthRequestDto healthRequestDto, User user, Pet pet) {
+        PoopColor poopColor = poopColorRepository.getById(healthRequestDto.getPoop_color());
+        PoopFirmness poopFirmness = poopFirmnessRepository.getById(healthRequestDto.getPoop_firmness());
+        PoopNum poopNum = poopNumRepository.getById(healthRequestDto.getPoop_num());
+        Health health = healthRequestDto.toEntity(user, pet, poopColor, poopFirmness, poopNum);
+        health.setScore();
         health.setResult();
         return healthRepository.save(health).getId();
     }

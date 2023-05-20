@@ -23,15 +23,15 @@ public class Health extends BaseEntity{
     @Column
     private String check_part;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "poopcolor_id")
     private PoopColor poop_color;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "poopfimness_id")
     private PoopFirmness poop_firmness;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "poopnum_id")
     private PoopNum poop_num;
 
@@ -49,12 +49,13 @@ public class Health extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void setScore(PoopColor poop_color, PoopFirmness poop_firmness, PoopNum poop_num) {
-        this.score = poop_color.getScore()+poop_firmness.getScore()+poop_num.getScore();
+    public void setScore() {
+        System.out.println("poop_color.getScore() = " + this.poop_color.getScore());
+        this.score = this.poop_color.getScore()+this.poop_firmness.getScore()+this.poop_num.getScore();
     }
 
     public void setResult(){
-        if (score>0 && score<=50){
+        if (score>=0 && score<=50){
             this.result = treat+"은 "+pet.getName()+"이에게 잘 맞지 않아요.";
         } else if (score>50 && score<=80) {
             this.result = treat+"은 "+pet.getName()+"이에게 맞아요.";

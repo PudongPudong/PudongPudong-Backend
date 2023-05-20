@@ -9,10 +9,10 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="poopfimness")
+@Table(name="poopfirmness")
 public class PoopFirmness {
     @Id
-    @Column(name = "poopfimness_id")
+    @Column(name = "poopfirmness_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
