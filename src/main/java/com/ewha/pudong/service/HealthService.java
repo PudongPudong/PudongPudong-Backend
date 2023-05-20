@@ -61,9 +61,15 @@ public class HealthService {
     // 건강 작성
     @Transactional
     public Long createHealth(HealthRequestDto healthRequestDto, User user, Pet pet) {
-        PoopColor poopColor = poopColorRepository.getById(healthRequestDto.getPoop_color());
-        PoopFirmness poopFirmness = poopFirmnessRepository.getById(healthRequestDto.getPoop_firmness());
-        PoopNum poopNum = poopNumRepository.getById(healthRequestDto.getPoop_num());
+        PoopColor poopColor = poopColorRepository.findById(healthRequestDto.getPoop_color()).orElseThrow(() -> {
+            return new IllegalArgumentException("poopColor Id를 찾을 수 없습니다.");
+        });
+        PoopFirmness poopFirmness = poopFirmnessRepository.findById(healthRequestDto.getPoop_firmness()).orElseThrow(() -> {
+            return new IllegalArgumentException("poopFirmness Id를 찾을 수 없습니다.");
+        });
+        PoopNum poopNum = poopNumRepository.findById(healthRequestDto.getPoop_num()).orElseThrow(() -> {
+            return new IllegalArgumentException("poopFirmness Id를 찾을 수 없습니다.");
+        });
         Health health = healthRequestDto.toEntity(user, pet, poopColor, poopFirmness, poopNum);
         health.setScore();
         health.setResult();

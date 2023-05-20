@@ -28,7 +28,7 @@ public class HealthController {
     @GetMapping()
     // @AuthenticationPrincipal User user
     public List<HealthResponseDto> getHealthList() {
-        User user = userRepository.getById(1L);
+        User user = userRepository.getReferenceById(1L);
         return healthService.findHealthList(user);
     }
 
@@ -41,17 +41,17 @@ public class HealthController {
     // 점수가 높은 세개 건강 조회
     @GetMapping("/top3")
     public List<HealthResponseDto> getTop3Health(){
-        User user = userRepository.getById(1L);
+        User user = userRepository.getReferenceById(1L);
         return healthService.findTop3Health(user);
     }
 
     // 건강 작성
     @PostMapping()
     public HealthDetailResponseDto createHealth(@RequestBody HealthRequestDto healthRequestDto) {
-        User user = userRepository.getById(1L);
-        Pet pet = petRepository.getReferenceById(1L);
+        User user = userRepository.getReferenceById(1L);
+        Pet pet = petRepository.findPetByUserId(user.getId());
         Long id = healthService.createHealth(healthRequestDto, user, pet);
-        Health health = healthRepository.getById(id);
+        Health health = healthRepository.getReferenceById(id);
         return new HealthDetailResponseDto(health);
     }
 }
