@@ -1,12 +1,15 @@
 package com.ewha.pudong.service;
 
 import com.ewha.pudong.domain.Recipe;
+import com.ewha.pudong.domain.Refrigerator;
 import com.ewha.pudong.domain.User;
 import com.ewha.pudong.dto.RecipeDetailResponseDto;
 import com.ewha.pudong.dto.RecipeResponseDto;
+import com.ewha.pudong.dto.RefrigeratorResponseDto;
 import com.ewha.pudong.exception.CustomException;
 import com.ewha.pudong.exception.ErrorCode;
 import com.ewha.pudong.repository.RecipeRepository;
+import com.ewha.pudong.repository.RefrigeratorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -20,8 +23,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RecipeService {
     private final RecipeRepository recipeRepository;
+    private final RefrigeratorRepository refrigeratorRepository;
 
-    public List<RecipeResponseDto> findRecipeByIngredient(List<String> ingredients){
+    public List<RecipeResponseDto> findRecipeByIngredient(List<String> ingredients, User user){
+
+        // 유저마다 냉장고 저장, 유저에 해당하는 냉장고가 이미 db에 있다면 업데이트
+        Refrigerator myRefrigerator = refrigeratorRepository.findByUser(user);
+        if (myRefrigerator==null){
+             String ingredient = ingredients.toString();
+            Refrigerator refrigerator = new Refrigerator(ingredient, user);
+            refrigeratorRepository.save(refrigerator);
+        }
+        else {
+            myRefrigerator.update(ingredients.toString());
+            refrigeratorRepository.save(myRefrigerator);
+        }
+
         String keyword = String.join("%", ingredients);
         List<Recipe> recipes = recipeRepository.searchByIngredientLike(keyword);
         return recipes.stream().map(RecipeResponseDto::new)
