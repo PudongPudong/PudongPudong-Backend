@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+application-oauth.properties
+application-db.properties
+
+pudong.sql
+
