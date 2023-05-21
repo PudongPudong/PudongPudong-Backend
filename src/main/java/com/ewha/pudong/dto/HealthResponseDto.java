@@ -9,10 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HealthResponseDto {
+
+    private Long id;
     private String treat;
     private int score;
 
     public HealthResponseDto(Health health) {
+        this.id = health.getId();
         this.treat = health.getTreat();
         this.score = health.getScore();
     }

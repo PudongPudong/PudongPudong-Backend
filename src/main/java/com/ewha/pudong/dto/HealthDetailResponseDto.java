@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class HealthDetailResponseDto {
 
+    private Long id;
     private String treat;
     private String check_part;
     private String result;
@@ -26,6 +27,7 @@ public class HealthDetailResponseDto {
     private LocalDateTime createdAt;
 
     public HealthDetailResponseDto(Health health){
+        this.id = health.getId();
         this.result = health.getResult();
         this.score = health.getScore();
         this.poop_color = health.getPoop_color().getName();
