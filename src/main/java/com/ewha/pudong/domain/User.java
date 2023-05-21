@@ -38,9 +38,10 @@ public class User extends BaseEntity{
     @JsonIgnore
     private String password;
 
-    @NotNull
+    @Column
     private String provider; //어떤 OAuth인지
 
+    @Column
     private String providerId;
 
     @Builder
@@ -52,5 +53,12 @@ public class User extends BaseEntity{
         this.role = role;
         this.provider = provider;
         this.providerId = providerId;
+    }
+
+    public User update(String username, String image){
+        this.username = username;
+        this.image = image;
+
+        return this;
     }
 }
