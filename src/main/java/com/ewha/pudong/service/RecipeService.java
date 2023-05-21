@@ -86,16 +86,25 @@ public class RecipeService {
     }
 
     public List<RecipeResponseDto> findRandomRecipe(){
+        Long a[] = new Long[3];
         List<Recipe> recipes = recipeRepository.findAll();
         Random random = new Random();
 
-        Long first = Long.valueOf(random.nextInt(recipes.size()));
-        Long second = Long.valueOf(random.nextInt(recipes.size()));
-        Long third = Long.valueOf(random.nextInt(recipes.size()));
+        for (int i=0;i<3;i++){
+            a[i] = Long.valueOf(random.nextInt(recipes.size()));
+            for(int j=0;j<i;j++)
+            {
+                if(a[i]==a[j])
+                {
+                    i--;
+                }
+            }
+        }
+
         List<Recipe> randomRecipes = new ArrayList<Recipe>();
-        randomRecipes.add(recipeRepository.getById(first));
-        randomRecipes.add(recipeRepository.getById(second));
-        randomRecipes.add(recipeRepository.getById(third));
+        randomRecipes.add(recipeRepository.getReferenceById(a[0]));
+        randomRecipes.add(recipeRepository.getReferenceById(a[1]));
+        randomRecipes.add(recipeRepository.getReferenceById(a[2]));
 
         return randomRecipes.stream().map(RecipeResponseDto::new)
                 .collect(Collectors.toList());
