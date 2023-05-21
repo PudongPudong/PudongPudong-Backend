@@ -22,7 +22,8 @@ public class Pet {
     @ManyToOne
     @NotNull
     @JoinColumn(name = "user_id")
-    private User owner;
+    private User user;
+
 
     @NotNull
     private String name;
@@ -46,8 +47,8 @@ public class Pet {
     private String allergy;
 
     @Builder
-    public Pet(User owner, String name, String image, String sex, String birthday, String variety, String weight, String allergy){
-        this.owner = owner;
+    public Pet(User user, String name, String image, String sex, String birthday, String variety, String weight, String allergy){
+        this.user = user;
         this.name = name;
         this.image = image;
         this.sex = sex;
@@ -56,5 +57,4 @@ public class Pet {
         this.weight = weight;
         this.allergy = allergy;
     }
-
 }

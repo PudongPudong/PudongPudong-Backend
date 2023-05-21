@@ -1,5 +1,9 @@
 package com.ewha.pudong.controller;
 
+import com.ewha.pudong.domain.User;
+import com.ewha.pudong.dto.RecipeDetailResponseDto;
+import com.ewha.pudong.dto.RecipeResponseDto;
+import com.ewha.pudong.repository.UserRepository;
 import com.ewha.pudong.dto.RecipeDetailResponseDto;
 import com.ewha.pudong.dto.RecipeResponseDto;
 import com.ewha.pudong.service.RecipeService;
@@ -13,10 +17,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecipeController {
     private final RecipeService recipeService;
+    private final UserRepository userRepository;
 
     @GetMapping("refrigerator")
+    // @AuthenticationPrincipal User user
     public List<RecipeResponseDto> makeRecipeByIngredient(@RequestParam List<String> ingredients){
-        return recipeService.findRecipeByIngredient(ingredients);
+        User user = userRepository.getReferenceById(1L);
+        return recipeService.findRecipeByIngredient(ingredients, user);
     }
 
     @GetMapping("/{recipeId}")

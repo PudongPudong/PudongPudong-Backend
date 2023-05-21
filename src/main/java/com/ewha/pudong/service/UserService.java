@@ -28,12 +28,13 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
+  
     private Pet toPetEntity(Long userId, RegistrationRequestDto registrationRequestDto){
-        User owner = findUserEntity(userId);
+        User user = findUserEntity(userId);
         return Pet.builder()
                 .name(registrationRequestDto.getName())
                 .allergy(registrationRequestDto.getAllergyList().toString())
-                .owner(owner)
+                .user(user)
                 .build();
     }
 
