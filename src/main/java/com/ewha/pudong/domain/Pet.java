@@ -19,10 +19,11 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @NotNull
     @JoinColumn(name = "user_id")
     private User user;
+
 
     @NotNull
     private String name;
@@ -56,5 +57,4 @@ public class Pet {
         this.weight = weight;
         this.allergy = allergy;
     }
-
 }

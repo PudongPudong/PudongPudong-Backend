@@ -4,6 +4,8 @@ import com.ewha.pudong.domain.User;
 import com.ewha.pudong.dto.RecipeDetailResponseDto;
 import com.ewha.pudong.dto.RecipeResponseDto;
 import com.ewha.pudong.repository.UserRepository;
+import com.ewha.pudong.dto.RecipeDetailResponseDto;
+import com.ewha.pudong.dto.RecipeResponseDto;
 import com.ewha.pudong.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecipeController {
     private final RecipeService recipeService;
-
     private final UserRepository userRepository;
 
     @GetMapping("refrigerator")

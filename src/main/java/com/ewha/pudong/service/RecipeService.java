@@ -13,7 +13,6 @@ import com.ewha.pudong.repository.RefrigeratorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,6 +24,7 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final RefrigeratorRepository refrigeratorRepository;
 
+    @Transactional
     public List<RecipeResponseDto> findRecipeByIngredient(List<String> ingredients, User user){
 
         // 유저마다 냉장고 저장, 유저에 해당하는 냉장고가 이미 db에 있다면 업데이트
@@ -110,4 +110,5 @@ public class RecipeService {
                 .collect(Collectors.toList());
 
     }
+
 }

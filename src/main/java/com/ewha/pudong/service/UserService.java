@@ -28,6 +28,7 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
+  
     private Pet toPetEntity(Long userId, RegistrationRequestDto registrationRequestDto){
         User user = findUserEntity(userId);
         return Pet.builder()
