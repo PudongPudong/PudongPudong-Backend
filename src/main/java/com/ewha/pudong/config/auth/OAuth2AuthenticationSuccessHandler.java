@@ -38,7 +38,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         UserResponseDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
 
 
-        String redirectUrl = UriComponentsBuilder.fromUriString("https://localhost:3000/login") //frontend page로 redirect
+        String redirectUrl = UriComponentsBuilder.fromUriString("https://pudongpudong.shop/login") //frontend page로 redirect
                 .queryParam("token", tokenInfo.getAccessToken())
                 .build().toUriString();
 

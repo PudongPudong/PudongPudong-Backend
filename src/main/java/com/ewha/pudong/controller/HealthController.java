@@ -9,6 +9,7 @@ import com.ewha.pudong.repository.PetRepository;
 import com.ewha.pudong.repository.UserRepository;
 import com.ewha.pudong.service.HealthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,11 +27,8 @@ public class HealthController {
 
     // 유저별 건강 전체 조회
     @GetMapping()
-    // @AuthenticationPrincipal User user
-    public List<HealthResponseDto> getHealthList() {
-        User user = userRepository.getReferenceById(1L);
-        System.out.println("user = " + user.getId());
-        return healthService.findHealthList(user);
+    public List<HealthResponseDto> getHealthList(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return healthService.findHealthList(userPrincipal.getId());
     }
 
     // 건강 개별 조회
@@ -41,17 +39,14 @@ public class HealthController {
 
     // 점수가 높은 세개 건강 조회
     @GetMapping("/top3")
-    public List<HealthResponseDto> getTop3Health(){
-        User user = userRepository.getReferenceById(1L);
-        return healthService.findTop3Health(user);
+    public List<HealthResponseDto> getTop3Health(@AuthenticationPrincipal UserPrincipal userPrincipal){
+        return healthService.findTop3Health(userPrincipal.getId());
     }
 
     // 건강 작성
     @PostMapping()
-    public HealthDetailResponseDto createHealth(@RequestBody HealthRequestDto healthRequestDto) {
-        User user = userRepository.getReferenceById(1L);
-        Pet pet = petRepository.findPetByUserId(user.getId());
-        Long id = healthService.createHealth(healthRequestDto, user, pet);
+    public HealthDetailResponseDto createHealth(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody HealthRequestDto healthRequestDto) {
+        Long id = healthService.createHealth(healthRequestDto, userPrincipal.getId());
         Health health = healthRepository.getReferenceById(id);
         return new HealthDetailResponseDto(health);
     }

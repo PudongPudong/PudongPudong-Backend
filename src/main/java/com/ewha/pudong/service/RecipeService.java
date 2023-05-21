@@ -10,9 +10,12 @@ import com.ewha.pudong.exception.CustomException;
 import com.ewha.pudong.exception.ErrorCode;
 import com.ewha.pudong.repository.RecipeRepository;
 import com.ewha.pudong.repository.RefrigeratorRepository;
+import com.ewha.pudong.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,10 +26,12 @@ import java.util.stream.Collectors;
 public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final RefrigeratorRepository refrigeratorRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public List<RecipeResponseDto> findRecipeByIngredient(List<String> ingredients, User user){
+    public List<RecipeResponseDto> findRecipeByIngredient(List<String> ingredients, Long userId){
 
+        User user = findUserEntity(userId);
         // 유저마다 냉장고 저장, 유저에 해당하는 냉장고가 이미 db에 있다면 업데이트
         Refrigerator myRefrigerator = refrigeratorRepository.findByUser(user);
         if (myRefrigerator==null){
@@ -109,6 +114,11 @@ public class RecipeService {
         return randomRecipes.stream().map(RecipeResponseDto::new)
                 .collect(Collectors.toList());
 
+    }
+
+    private User findUserEntity(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
 }

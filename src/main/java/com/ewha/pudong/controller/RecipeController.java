@@ -1,6 +1,7 @@
 package com.ewha.pudong.controller;
 
 import com.ewha.pudong.domain.User;
+import com.ewha.pudong.domain.UserPrincipal;
 import com.ewha.pudong.dto.RecipeDetailResponseDto;
 import com.ewha.pudong.dto.RecipeResponseDto;
 import com.ewha.pudong.repository.UserRepository;
@@ -8,6 +9,7 @@ import com.ewha.pudong.dto.RecipeDetailResponseDto;
 import com.ewha.pudong.dto.RecipeResponseDto;
 import com.ewha.pudong.service.RecipeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,13 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecipeController {
     private final RecipeService recipeService;
-    private final UserRepository userRepository;
-
     @GetMapping("refrigerator")
-    // @AuthenticationPrincipal User user
-    public List<RecipeResponseDto> makeRecipeByIngredient(@RequestParam List<String> ingredients){
-        User user = userRepository.getReferenceById(1L);
-        return recipeService.findRecipeByIngredient(ingredients, user);
+    public List<RecipeResponseDto> makeRecipeByIngredient(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam List<String> ingredients){
+        return recipeService.findRecipeByIngredient(ingredients, userPrincipal.getId());
     }
 
     @GetMapping("/{recipeId}")

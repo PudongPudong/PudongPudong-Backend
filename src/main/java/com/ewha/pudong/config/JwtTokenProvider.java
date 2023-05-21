@@ -37,7 +37,8 @@ public class JwtTokenProvider {
     private static final String TYPE_ACCESS = "access";
     private static final String TYPE_REFRESH = "refresh";
     // 토큰 유효시간 3시간
-    private final long ACCESS_TOKEN_VALID_TIME = 60 * 60 * 3 * 1000L;
+    //private final long ACCESS_TOKEN_VALID_TIME = 60 * 60 * 3 * 1000L;
+    private final long ACCESS_TOKEN_VALID_TIME = 60 * 60 * 24 * 14 * 1000L; //일단 길게 설정
     // 14일
     private final long REFRESH_TOKEN_VALID_TIME = 60 * 60 * 24 * 14 * 1000L;
 
